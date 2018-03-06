@@ -137,11 +137,10 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-get-real-path')
+    compile project(':react-native-file-utils')
     compile project(':react-native-fs')
     compile project(':react-native-fetch-blob')
-    compile project(':react-native-document-picker')
-    compile project(':react-native-fetch-blob')
-    compile project(':react-native-document-picker')
     compile project(':react-native-document-picker')
     compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])
