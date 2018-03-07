@@ -1,53 +1,30 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {DocumentPicker, DocumentPickerUtil} from 'react-native-document-picker';
 import {Alert, Button, StyleSheet, View, Text} from 'react-native'
 
-import RNFS from 'react-native-fs';
-
+import {AndroReader} from './FileReaderAndroid'
 
 export default class OpenFile extends Component {
 
     constructor(props){
         super(props);
         this.state = {
-            uri: undefined,
             file: undefined,
-            name: undefined,
             loading: false,
         }
     }
 
-    _readFileFromUriRNFS() {
-
-        RNFS.readFile(this.state.uri, 'base64')
-                .then((data)=>
-                    this.setState({
-                        file: data
-                    })
-            ).then(console.log(this.state.file))
-                .then(console.log('msg'))
-        }
-
     _onButtonPress() {
         this.setState({loading: true});
-        DocumentPicker.show({
-            filetype: [DocumentPickerUtil.allFiles()],
-        }, (error, res) => {
-            if (res != null) {
-
+        AndroReader.openFile()
+            .then((res)=> {
                 this.setState({
-                    uri: res.uri,
-                    name: res.name
+                    file: res,
+                    loading: false
                 });
-
-                this._readFileFromUriRNFS();
-            }else {
-                Alert.alert('cancelled')
-            }
-        });
-        this.setState({loading: false})
+                console.log(this.state.file)
+        })
     };
 
 
@@ -64,7 +41,6 @@ export default class OpenFile extends Component {
                     />
 
                 </View>
-                <Text>{JSON.stringify(this.state.name)}</Text>
             </View>
         );
     }
